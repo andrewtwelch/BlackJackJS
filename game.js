@@ -37,6 +37,10 @@ function setStats() {
 
 function startGameButtons(prevGame, gameResult) {
   $("#buttonarea").html("");
+  $("#playertitle").text("Player Hand");
+  $("#dealertitle").text("Dealer Hand");
+  $("#playerhand").html("");
+  $("#dealerhand").html("");
   if (prevGame) {
     if (gameResult == 0) {
       $("<p>").text("Game lost.").appendTo("#buttonarea");
