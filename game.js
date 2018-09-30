@@ -206,7 +206,7 @@ function getPlayerHandValue() {
   for (i = 0; i < playerHand.length; i++) {
     var card = playerHand[i];
     if ((card.charAt(0) == "A") && (value > 21)) {
-     value +-= 10;
+     value -= 10;
     }
   }
   return value;
@@ -261,7 +261,7 @@ function getDealerHandValue() {
     for (i = 0; i < playerHand.length; i++) {
       var card = playerHand[i];
       if ((card.charAt(0) == "A") && (value > 21)) {
-       value +-= 10;
+       value -= 10;
       }
     }
   }
