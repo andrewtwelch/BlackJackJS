@@ -198,7 +198,6 @@ function getPlayerHandValue() {
     }
     else if (card.charAt(0) == "A") {
       value += 11;
-      }
     }
     else {
       value += Number(card.charAt(0));
@@ -254,7 +253,6 @@ function getDealerHandValue() {
       }
       else if (card.charAt(0) == "A") {
         value += 11;
-        }
       }
       else {
         value += Number(card.charAt(0));
