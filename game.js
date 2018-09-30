@@ -4,11 +4,14 @@ var freshDeck = ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', 'TS', 'JS
                  'AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', 'TD', 'JD', 'QD', 'KD'];
 
 var currentDeck = [];
-
 var playerHand = [];
 var dealerHand = [];
-
-var playerMoney, win, lose, draw, currentBet, playerStand;
+var playerMoney;
+var win;
+var lose;
+var draw;
+var currentBet;
+var playerStand;
 
 function clearGameArea() {
   $("#gamearea").html("");
@@ -37,10 +40,6 @@ function setStats() {
 
 function startGameButtons(prevGame, gameResult) {
   $("#buttonarea").html("");
-  $("#playertitle").text("Player Hand");
-  $("#dealertitle").text("Dealer Hand");
-  $("#playerhand").html("");
-  $("#dealerhand").html("");
   if (prevGame) {
     if (gameResult == 0) {
       $("<p>").text("Game lost.").appendTo("#buttonarea");
@@ -63,6 +62,10 @@ function startGameButtons(prevGame, gameResult) {
 
 function bettingButtons() {
   $("#buttonarea").html("");
+  $("#playertitle").text("Player Hand");
+  $("#dealertitle").text("Dealer Hand");
+  $("#playerhand").html("");
+  $("#dealerhand").html("");
   $("<button>").text("Bet 5").attr("onclick", "bet(5)").appendTo("#buttonarea");
   $("<button>").text("Bet 10").attr("onclick", "bet(10)").appendTo("#buttonarea");
   $("<button>").text("Bet 50").attr("onclick", "bet(50)").appendTo("#buttonarea");
@@ -108,15 +111,39 @@ function stand() {
   calculateWinner();
 }
 
+function winGame() {
+  win += 1;
+  playerMoney = playerMoney + (currentBet * 2);
+  currentBet = 0;
+  setMoney();
+  setStats();
+  startGameButtons(true, 2);
+}
+
+function loseGame() {
+  lose += 1;
+  currentBet = 0;
+  setMoney();
+  setStats();
+  startGameButtons(true, 0);
+}
+
+function drawGame() {
+  draw += 1;
+  playerMoney = playerMoney + currentBet;
+  currentBet = 0;
+  setMoney();
+  setStats();
+  startGameButtons(true, 1);
+}
+
 function calculateWinner() {
   updateDealerHand();
   var playerValue = getPlayerHandValue()
   var dealerValue = getDealerHandValue()
 
   if (playerValue > 21) {
-    startGameButtons(true, 0);
-    lose += 1;
-    setStats();
+    loseGame();
   }
   else {
     while (dealerValue < 17) {
@@ -126,35 +153,24 @@ function calculateWinner() {
     }
 
     if (dealerValue > 21) {
-      startGameButtons(true, 2);
-      win += 1;
-      playerMoney += (currentBet * 2);
-      setStats();
+      winGame();
     }
     else if (dealerValue > playerValue) {
-      startGameButtons(true, 0);
-      lose += 1;
-      setStats();
+      loseGame();
     }
     else if (dealerValue < playerValue) {
-      startGameButtons(true, 2);
-      win += 1;
-      playerMoney += (currentBet * 2);
-      setStats();
-    }
+      winGame();
+}
     else if (dealerValue == playerValue) {
-      startGameButtons(true, 1);
-      draw += 1;
-      playerMoney += currentBet;
-      setStats();
-    }
+      drawGame();
+}
   }
 }
 
 function bet(number) {
   if (playerMoney >= number) {
     playerMoney -= number;
-    currentBet += number;
+    currentBet = currentBet + number;
     setMoney();
   }
 }
@@ -197,8 +213,8 @@ function getPlayerHandValue() {
 
 function getDealerHandValue() {
   var value = 0;
-  for (i = 0; i < dealerHand.length; i++) {
-    var card = dealerHand[i];
+  if (!playerStand) {
+    var card = dealerHand[0];
     if (card.charAt(0) == "T") {
       value += 10;
     }
@@ -223,6 +239,34 @@ function getDealerHandValue() {
       value += Number(card.charAt(0));
     }
   }
+  else {
+    for (i = 0; i < dealerHand.length; i++) {
+      var card = dealerHand[i];
+      if (card.charAt(0) == "T") {
+        value += 10;
+      }
+      else if (card.charAt(0) == "J") {
+        value += 10;
+      }
+      else if (card.charAt(0) == "Q") {
+        value += 10;
+      }
+      else if (card.charAt(0) == "K") {
+        value += 10;
+      }
+      else if (card.charAt(0) == "A") {
+        if (value >= 11) {
+          value += 1;
+        }
+        else {
+          value += 11;
+        }
+      }
+      else {
+        value += Number(card.charAt(0));
+      }
+    }
+  }
   return value;
 }
 
@@ -236,7 +280,6 @@ function initialiseGame() {
 }
 
 function newGame() {
-  currentBet = 0;
   playerStand = false;
   playerHand = [];
   dealerHand = [];
