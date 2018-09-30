@@ -284,7 +284,7 @@ function newGame() {
   playerHand = [];
   dealerHand = [];
   $("#dealertitle").text("Dealer Hand");
-  $("#playertitle").text("Dealer Hand");
+  $("#playertitle").text("Player Hand");
   newDeck();
   initialDeal();
   updateDealerHand();
@@ -292,7 +292,7 @@ function newGame() {
 }
 
 function resetDeck() {
-  currentDeck = freshDeck;
+  currentDeck = freshDeck.slice();
 }
 
 function shuffleDeck() {
