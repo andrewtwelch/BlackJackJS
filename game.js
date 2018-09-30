@@ -8,7 +8,7 @@ var currentDeck = [];
 var playerHand = [];
 var dealerHand = [];
 
-var playerMoney, win, lose, draw, currentBet, dealerRevealed;
+var playerMoney, win, lose, draw, currentBet, playerStand;
 
 function clearGameArea() {
   $("#gamearea").html("");
@@ -19,20 +19,216 @@ function buildGameArea() {
   $("<div>").attr("id", "dealerhand").appendTo("#gamearea");
   $("<h4>").text("Player Hand").appendTo("#gamearea");
   $("<div>").attr("id", "playerhand").appendTo("#gamearea");
+  $("<div>").attr("id", "buttonarea").appendTo("#gamearea");
+}
+
+function setMoney() {
+  if (currentBet > 0) {
+    $("#money").text("Money: " + playerMoney + " Current Bet: " + currentBet);
+  }
+  else {
+    $("#money").text("Money: " + playerMoney);
+  }
+}
+
+function setStats() {
+  $("#stats").text("Wins: " + win + " Losses: " + lose + " Draws: " + draw);
+}
+
+function startGameButtons(prevGame, gameResult) {
+  $("#buttonarea").html("");
+  if (prevGame) {
+    if (gameResult == 0) {
+      $("<p>").text("Game lost.").appendTo("#buttonarea");
+    }
+    else if (gameResult == 1) {
+      $("<p>").text("Game drawn.").appendTo("#buttonarea");
+    }
+    else if (gameResult == 2) {
+      $("<p>").text("Game won.").appendTo("#buttonarea");
+    }
+  }
+  if (playerMoney > 0) {
+    $("<button>").text("Play").attr("onclick", "start()").appendTo("#buttonarea");
+  }
+  else {
+    $("<p>").text("You have no money, refresh page to start again.").appendTo("#buttonarea");
+    $("<button>").text("Refresh").attr("onclick", "location.reload()").appendTo("#buttonarea");
+  }
+}
+
+function bettingButtons() {
+  $("#buttonarea").html("");
+  $("<button>").text("Bet 5").attr("onclick", "bet(5)").appendTo("#buttonarea");
+  $("<button>").text("Bet 10").attr("onclick", "bet(10)").appendTo("#buttonarea");
+  $("<button>").text("Bet 50").attr("onclick", "bet(50)").appendTo("#buttonarea");
+  $("<button>").text("Bet 100").attr("onclick", "bet(100)").appendTo("#buttonarea");
+  $("<button>").text("Confirm Bet").attr("onclick", "confirmBet()").appendTo("#buttonarea");
+}
+
+function hitStandButtons() {
+  $("#buttonarea").html("");
+  $("<button>").text("Hit").attr("onclick", "hit()").appendTo("#buttonarea");
+  $("<button>").text("Stand").attr("onclick", "stand()").appendTo("#buttonarea");
+}
+
+function hitStand() {
+  if (getPlayerHandValue() < 21) {
+    if (!playerStand) {
+      hitStandButtons();
+    }
+    else {
+      calculateWinner();
+    }
+  }
+  else {
+    playerStand = true;
+    calculateWinner();
+  }
+}
+
+
+function start() {
+  newGame();
+  setMoney();
+  bettingButtons();
+}
+
+function hit() {
+  playerHand.push(getCard());
+  updatePlayerHand();
+  hitStand();
+}
+
+function stand() {
+  playerStand = true;
+  calculateWinner();
+}
+
+function calculateWinner() {
+  updateDealerHand();
+  var playerValue = getPlayerHandValue()
+  var dealerValue = getDealerHandValue()
+
+  while (dealerValue < 17) {
+    dealerHand.push(getCard());
+    updateDealerHand();
+    dealerValue = getDealerHandValue()
+  }
+
+  if (playerValue > 21) {
+    startGameButtons(true, 0);
+    lose += 1;
+    setStats();
+  }
+  if (dealerValue > 21) {
+    startGameButtons(true, 2);
+    win += 1;
+    setStats();
+  }
+  if (dealerValue > playerValue) {
+    startGameButtons(true, 0);
+    lose += 1;
+    setStats();
+  }
+  if (dealerValue < playerValue) {
+    startGameButtons(true, 2);
+    win += 1;
+    setStats();
+  }
+  if (dealerValue == playerValue) {
+    startGameButtons(true, 1);
+    draw += 1;
+    setStats();
+  }
+}
+
+function bet(number) {
+  if (playerMoney >= number) {
+    playerMoney -= number;
+    currentBet += number;
+    setMoney();
+  }
+}
+
+function confirmBet() {
+  hitStand();
+}
+
+function getPlayerHandValue() {
+  var value = 0;
+  for (i = 0; i < playerHand.length; i++) {
+    var card = playerHand[i];
+    if (card.charAt(0) == "T") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "J") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "Q") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "K") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "A") {
+      if (value >= 11) {
+        value += 1;
+      }
+      else {
+        value += 11;
+      }
+    }
+    else {
+      value += Number(card.charAt(0));
+    }
+  }
+  return value;
+}
+
+function getDealerHandValue() {
+  var value = 0;
+  for (i = 0; i < dealerHand.length; i++) {
+    var card = dealerHand[i];
+    if (card.charAt(0) == "T") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "J") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "Q") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "K") {
+      value += 10;
+    }
+    else if (card.charAt(0) == "A") {
+      if (value >= 11) {
+        value += 1;
+      }
+      else {
+        value += 11;
+      }
+    }
+    else {
+      value += Number(card.charAt(0));
+    }
+  }
+  return value;
 }
 
 function initialiseGame() {
-  playerMoney = 50;
+  playerMoney = 500;
   win = 0;
   lose = 0;
   draw = 0;
   currentBet = 0;
-  dealerRevealed = false;
+  playerStand = false;
 }
 
 function newGame() {
   currentBet = 0;
-  dealerRevealed = false;
+  playerStand = false;
   playerHand = [];
   dealerHand = [];
   newDeck();
@@ -74,7 +270,7 @@ function getCardFilename(card) {
 function updateDealerHand() {
   var area = "#dealerhand";
   $(area).html("");
-  if (!dealerRevealed) {
+  if (!playerStand) {
     var cardImage = $("<img>");
     cardImage.attr("src", getCardFilename(dealerHand[0]));
     cardImage.attr("width", "100");

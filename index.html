@@ -7,7 +7,20 @@
   </head>
   <body>
     <h1>BlackJackJS</h1>
+    <h4 id="money">Money: </h4>
+    <h4 id="stats">Wins: 0 Losses: 0 Draws: 0 </h4>
+
     <div id="gamearea">
     </div>
+    <script>
+      runGame();
+
+      function runGame() {
+        initialiseGame();
+        buildGameArea();
+        setMoney();
+        startGameButtons(false, null);
+      }
+    </script>
   </body>
 </html>
