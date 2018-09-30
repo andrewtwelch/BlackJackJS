@@ -58,7 +58,7 @@ function getCardFilename(card) {
 }
 
 function updateDealerHand() {
-  var area = "#cardarea";
+  var area = "#dealerhand";
   $(area).html("");
   if (!dealerRevealed) {
     var cardImage = $("<img>");
@@ -81,7 +81,7 @@ function updateDealerHand() {
 }
 
 function updatePlayerHand() {
-  var area = "#cardarea";
+  var area = "#playerhand";
   $(area).html("");
   for (i = 0; i < playerHand.length; i++) {
     var cardImage = $("<img>");
