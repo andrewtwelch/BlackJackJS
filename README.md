@@ -6,6 +6,5 @@ Play at [https://andrewwelch.net/BlackJackJS](https://andrewwelch.net/BlackJackJ
 
 ### To-do
 
-1. Natural BlackJack
-2. Cookies for win/lose/draw and money
-3. Maybe make it look better or something I dunno
+1. Cookies for win/lose/draw and money
+2. Maybe make it look better or something I dunno
