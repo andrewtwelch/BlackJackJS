@@ -145,6 +145,7 @@ function calculateWinner() {
   if (playerValue > 21) {
     loseGame();
   }
+  else if (playerValue = 21)
   else {
     while (dealerValue < 17) {
       dealerHand.push(getCard());
@@ -197,15 +198,17 @@ function getPlayerHandValue() {
       value += 10;
     }
     else if (card.charAt(0) == "A") {
-      if (value >= 11) {
-        value += 1;
-      }
-      else {
-        value += 11;
+      value += 11;
       }
     }
     else {
       value += Number(card.charAt(0));
+    }
+  }
+  for (i = 0; i < playerHand.length; i++) {
+    var card = playerHand[i];
+    if ((card.charAt(0) == "A") && (value > 21)) {
+     value +-= 10;
     }
   }
   return value;
@@ -228,11 +231,7 @@ function getDealerHandValue() {
       value += 10;
     }
     else if (card.charAt(0) == "A") {
-      if (value >= 11) {
-        value += 1;
-      }
-      else {
-        value += 11;
+      value += 11;
       }
     }
     else {
@@ -255,15 +254,17 @@ function getDealerHandValue() {
         value += 10;
       }
       else if (card.charAt(0) == "A") {
-        if (value >= 11) {
-          value += 1;
-        }
-        else {
-          value += 11;
+        value += 11;
         }
       }
       else {
         value += Number(card.charAt(0));
+      }
+    }
+    for (i = 0; i < playerHand.length; i++) {
+      var card = playerHand[i];
+      if ((card.charAt(0) == "A") && (value > 21)) {
+       value +-= 10;
       }
     }
   }
