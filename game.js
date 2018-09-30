@@ -10,6 +10,17 @@ var dealerHand = [];
 
 var playerMoney, win, lose, draw, currentBet, dealerRevealed;
 
+function clearGameArea() {
+  $("#gamearea").html("");
+}
+
+function buildGameArea() {
+  $("<h4>").text("Dealer Hand").appendTo("#gamearea");
+  $("<div>").attr("id", "dealerhand").appendTo("#gamearea");
+  $("<h4>").text("Player Hand").appendTo("#gamearea");
+  $("<div>").attr("id", "playerhand").appendTo("#gamearea");
+}
+
 function initialiseGame() {
   playerMoney = 50;
   win = 0;
@@ -25,6 +36,9 @@ function newGame() {
   playerHand = [];
   dealerHand = [];
   newDeck();
+  initialDeal();
+  updateDealerHand();
+  updatePlayerHand();
 }
 
 function resetDeck() {
