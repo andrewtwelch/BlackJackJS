@@ -22,6 +22,9 @@ function initialiseGame() {
 function newGame() {
   currentBet = 0;
   dealerRevealed = false;
+  playerHand = [];
+  dealerHand = [];
+  newDeck();
 }
 
 function resetDeck() {
@@ -43,8 +46,47 @@ function getCard() {
 }
 
 function initialDeal() {
-  for (; i < 3;) {
+  for (var i = 0; i < 2; i++) {
     playerHand.push(getCard());
     dealerHand.push(getCard());
+  }
+}
+
+function getCardFilename(card) {
+  var string = "cards/" + card + ".svg";
+  return string;
+}
+
+function updateDealerHand() {
+  var area = "#cardarea";
+  $(area).html("");
+  if (!dealerRevealed) {
+    var cardImage = $("<img>");
+    cardImage.attr("src", getCardFilename(dealerHand[0]));
+    cardImage.attr("width", "100");
+    $(area).append(cardImage);
+    var cardImage = $("<img>");
+    cardImage.attr("src", "cards/CardBack.svg");
+    cardImage.attr("width", "100");
+    $(area).append(cardImage);
+  }
+  else {
+    for (i = 0; i < dealerHand.length; i++) {
+      var cardImage = $("<img>");
+      cardImage.attr("src", getCardFilename(dealerHand[i]));
+      cardImage.attr("width", "100");
+      $(area).append(cardImage);
+    }
+  }
+}
+
+function updatePlayerHand() {
+  var area = "#cardarea";
+  $(area).html("");
+  for (i = 0; i < playerHand.length; i++) {
+    var cardImage = $("<img>");
+    cardImage.attr("src", getCardFilename(playerHand[i]));
+    cardImage.attr("width", "100");
+    $(area).append(cardImage);
   }
 }
