@@ -15,9 +15,9 @@ function clearGameArea() {
 }
 
 function buildGameArea() {
-  $("<h4>").text("Dealer Hand").appendTo("#gamearea");
+  $("<h4>").text("Dealer Hand").attr("id", "dealertitle").appendTo("#gamearea");
   $("<div>").attr("id", "dealerhand").appendTo("#gamearea");
-  $("<h4>").text("Player Hand").appendTo("#gamearea");
+  $("<h4>").text("Player Hand").attr("id", "playertitle").appendTo("#gamearea");
   $("<div>").attr("id", "playerhand").appendTo("#gamearea");
   $("<div>").attr("id", "buttonarea").appendTo("#gamearea");
 }
@@ -89,7 +89,6 @@ function hitStand() {
 
 
 function start() {
-  newGame();
   setMoney();
   bettingButtons();
 }
@@ -110,36 +109,38 @@ function calculateWinner() {
   var playerValue = getPlayerHandValue()
   var dealerValue = getDealerHandValue()
 
-  while (dealerValue < 17) {
-    dealerHand.push(getCard());
-    updateDealerHand();
-    dealerValue = getDealerHandValue()
-  }
-
   if (playerValue > 21) {
     startGameButtons(true, 0);
     lose += 1;
     setStats();
   }
-  if (dealerValue > 21) {
-    startGameButtons(true, 2);
-    win += 1;
-    setStats();
-  }
-  if (dealerValue > playerValue) {
-    startGameButtons(true, 0);
-    lose += 1;
-    setStats();
-  }
-  if (dealerValue < playerValue) {
-    startGameButtons(true, 2);
-    win += 1;
-    setStats();
-  }
-  if (dealerValue == playerValue) {
-    startGameButtons(true, 1);
-    draw += 1;
-    setStats();
+  else {
+    while (dealerValue < 17) {
+      dealerHand.push(getCard());
+      updateDealerHand();
+      dealerValue = getDealerHandValue()
+    }
+
+    if (dealerValue > 21) {
+      startGameButtons(true, 2);
+      win += 1;
+      setStats();
+    }
+    else if (dealerValue > playerValue) {
+      startGameButtons(true, 0);
+      lose += 1;
+      setStats();
+    }
+    else if (dealerValue < playerValue) {
+      startGameButtons(true, 2);
+      win += 1;
+      setStats();
+    }
+    else if (dealerValue == playerValue) {
+      startGameButtons(true, 1);
+      draw += 1;
+      setStats();
+    }
   }
 }
 
@@ -152,6 +153,7 @@ function bet(number) {
 }
 
 function confirmBet() {
+  newGame();
   hitStand();
 }
 
@@ -231,6 +233,8 @@ function newGame() {
   playerStand = false;
   playerHand = [];
   dealerHand = [];
+  $("#dealertitle").text("Dealer Hand");
+  $("#playertitle").text("Dealer Hand");
   newDeck();
   initialDeal();
   updateDealerHand();
@@ -273,21 +277,22 @@ function updateDealerHand() {
   if (!playerStand) {
     var cardImage = $("<img>");
     cardImage.attr("src", getCardFilename(dealerHand[0]));
-    cardImage.attr("width", "100");
+    cardImage.attr("height", "150");
     $(area).append(cardImage);
     var cardImage = $("<img>");
     cardImage.attr("src", "cards/CardBack.svg");
-    cardImage.attr("width", "100");
+    cardImage.attr("height", "150");
     $(area).append(cardImage);
   }
   else {
     for (i = 0; i < dealerHand.length; i++) {
       var cardImage = $("<img>");
       cardImage.attr("src", getCardFilename(dealerHand[i]));
-      cardImage.attr("width", "100");
+      cardImage.attr("height", "150");
       $(area).append(cardImage);
     }
   }
+  $("#dealertitle").text("Dealer Hand - " + getDealerHandValue());
 }
 
 function updatePlayerHand() {
@@ -296,7 +301,8 @@ function updatePlayerHand() {
   for (i = 0; i < playerHand.length; i++) {
     var cardImage = $("<img>");
     cardImage.attr("src", getCardFilename(playerHand[i]));
-    cardImage.attr("width", "100");
+    cardImage.attr("height", "150");
     $(area).append(cardImage);
   }
+  $("#playertitle").text("Player Hand - " + getPlayerHandValue());
 }
