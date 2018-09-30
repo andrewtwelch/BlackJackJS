@@ -50,6 +50,9 @@ function startGameButtons(prevGame, gameResult) {
     else if (gameResult == 2) {
       $("<p>").text("Game won.").appendTo("#buttonarea");
     }
+    else if (gameResult == 3) {
+      $("<p>").text("Game won. Natural Blackjack.").appendTo("#buttonarea");
+    }
   }
   if (playerMoney > 0) {
     $("<button>").text("Play").attr("onclick", "start()").appendTo("#buttonarea");
@@ -118,6 +121,16 @@ function winGame() {
   setMoney();
   setStats();
   startGameButtons(true, 2);
+}
+
+function naturalBlackjack() {
+  win += 1;
+  playerMoney = playerMoney + (currentBet * 2.5);
+  currentBet = 0;
+  setMoney();
+  setStats();
+  startGameButtons(true, 3);
+
 }
 
 function loseGame() {
@@ -286,6 +299,16 @@ function newGame() {
   initialDeal();
   updateDealerHand();
   updatePlayerHand();
+  if (getPlayerHandValue() == 21) {
+    playerStand = true;
+    updateDealerHand();
+    if (getDealerHandValue() == 21) {
+      drawGame();
+    }
+    else {
+      naturalBlackjack();
+    }
+  }
 }
 
 function resetDeck() {
