@@ -27,10 +27,10 @@ function buildGameArea() {
 
 function setMoney() {
   if (currentBet > 0) {
-    $("#money").text("Money: " + playerMoney + " Current Bet: " + currentBet);
+    $("#money").text("Money: $" + playerMoney + " Current Bet: $" + currentBet);
   }
   else {
-    $("#money").text("Money: " + playerMoney);
+    $("#money").text("Money: $" + playerMoney);
   }
 }
 
@@ -66,10 +66,10 @@ function bettingButtons() {
   $("#dealertitle").text("Dealer Hand");
   $("#playerhand").html("");
   $("#dealerhand").html("");
-  $("<button>").text("Bet 5").attr("onclick", "bet(5)").appendTo("#buttonarea");
   $("<button>").text("Bet 10").attr("onclick", "bet(10)").appendTo("#buttonarea");
   $("<button>").text("Bet 50").attr("onclick", "bet(50)").appendTo("#buttonarea");
   $("<button>").text("Bet 100").attr("onclick", "bet(100)").appendTo("#buttonarea");
+  $("<button>").text("Bet 500").attr("onclick", "bet(500)").appendTo("#buttonarea");
   $("<button>").text("Confirm Bet").attr("onclick", "confirmBet()").appendTo("#buttonarea");
 }
 
