@@ -145,7 +145,6 @@ function calculateWinner() {
   if (playerValue > 21) {
     loseGame();
   }
-  else if (playerValue = 21)
   else {
     while (dealerValue < 17) {
       dealerHand.push(getCard());
