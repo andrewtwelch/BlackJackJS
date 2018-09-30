@@ -18,7 +18,7 @@ button {
 #dealerhand, #playerhand {
   background-color: #60bb60;
   padding: 20px;
-  height: 150px;
+  min-height: 160px;
 }
 
 #buttonarea {
