@@ -124,6 +124,7 @@ function calculateWinner() {
     if (dealerValue > 21) {
       startGameButtons(true, 2);
       win += 1;
+      playerMoney += (currentBet * 2);
       setStats();
     }
     else if (dealerValue > playerValue) {
@@ -134,11 +135,13 @@ function calculateWinner() {
     else if (dealerValue < playerValue) {
       startGameButtons(true, 2);
       win += 1;
+      playerMoney += (currentBet * 2);
       setStats();
     }
     else if (dealerValue == playerValue) {
       startGameButtons(true, 1);
       draw += 1;
+      playerMoney += currentBet;
       setStats();
     }
   }
