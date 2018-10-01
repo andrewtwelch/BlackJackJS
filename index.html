@@ -1,31 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>BlackJackJS</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="game.js"></script>
-    <script src="preload_images.js"></script>
+    <title>BlackJackJS - Home</title>
     <link href="game.css" type="text/css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
   </head>
-  <body onload="preloadImages()">
+  <body>
     <h1>BlackJackJS</h1>
-    <h4 id="money">Money: </h4>
-    <h4 id="stats">Wins: 0 Losses: 0 Draws: 0 </h4>
-
-    <div id="gamearea">
-    </div>
-    <script>
-      runGame();
-
-      function runGame() {
-        initialiseGame();
-        buildGameArea();
-        setMoney();
-        startGameButtons(false, null);
-      }
-    </script>
-    <div id="preload" style="display: none"></div>
+    <a href="game.html"><button>Play Game</button></a>
   </body>
 </html>
